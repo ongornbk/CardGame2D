@@ -4,10 +4,11 @@
 #include "Brushes.h"
 #include "RendererManager.h"
 #include "RenderTarget.h"
+#include "TextFormat.h"
 #include "Types.h"
 
 
-class Direct2D : Brushes,RenderTarget,RenderTargetSize
+class Direct2D : Brushes,RenderTarget,RenderTargetSize,TextFormat
 {
 public:
 	Direct2D();
@@ -17,6 +18,8 @@ public:
 	Boolean InitializeResources();
 	Boolean DiscardDeviceResources();
 	Boolean OnResize(uint32_t width, uint32_t height);
+
+
 
 	static void SetRendererManager(RendererManager* renderer);
 	
@@ -28,6 +31,7 @@ public:
 protected:
 	HWND m_hwnd;
 	ID2D1Factory*          m_factory;
+	IDWriteFactory*        m_writeFactory;
 
 };
 

@@ -11,6 +11,7 @@ Direct2D::Direct2D()
 {
 	m_hwnd = NULL;
 	m_factory = nullptr;
+	m_writeFactory = nullptr;
 	m_lightSlateGrayBrush = nullptr;
 	m_cornflowerBlueBrush = nullptr;
 }
@@ -28,6 +29,11 @@ Direct2D::~Direct2D()
 		m_factory->Release();
 		m_factory = nullptr;
 	}
+	if (m_writeFactory)
+	{
+		m_writeFactory->Release();
+		m_writeFactory = nullptr;
+	}
 	if (m_lightSlateGrayBrush)
 	{
 		m_lightSlateGrayBrush->Release();
@@ -42,7 +48,12 @@ Direct2D::~Direct2D()
 
 Boolean Direct2D::CreateFactory()
 {
-	return D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &m_factory);
+	Boolean result;
+	result = D2D1CreateFactory(D2D1_FACTORY_TYPE_MULTI_THREADED, &m_factory);
+	CheckBoolean(result);
+	result = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED,__uuidof(m_writeFactory),reinterpret_cast<IUnknown **>(&m_writeFactory));
+	CheckBoolean(result);
+	return result;
 }
 
 Boolean Direct2D::InitializeResources()
@@ -60,10 +71,18 @@ Boolean Direct2D::InitializeResources()
 	m_renderTarget.store(temp, std::memory_order::memory_order_seq_cst);
 	CheckBoolean(result);
 
-	m_renderTarget.load()->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::LightSlateGray), &m_lightSlateGrayBrush);
+	result = m_renderTarget.load()->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::LightSlateGray), &m_lightSlateGrayBrush);
 	CheckBoolean(result);
-	m_renderTarget.load()->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::CornflowerBlue), &m_cornflowerBlueBrush);
+	result = m_renderTarget.load()->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::CornflowerBlue), &m_cornflowerBlueBrush);
 	CheckBoolean(result);
+	result = m_writeFactory->CreateTextFormat(L"Consolas",NULL,DWRITE_FONT_WEIGHT_NORMAL,DWRITE_FONT_STYLE_NORMAL,DWRITE_FONT_STRETCH_NORMAL,90,L"", &m_textFormat);
+	CheckBoolean(result);
+
+	result = m_textFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
+	CheckBoolean(result);
+	result = m_textFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
+	CheckBoolean(result);
+
 	return result;
 }
 
@@ -123,44 +142,6 @@ void Direct2D::BeginDraw()
 	m_renderer->Render();
 		
 
-		
-		//for (int x = 0; x < width; x += 10)
-		//{
-		//	((ID2D1HwndRenderTarget*)Global::m_renderTarget.load())->DrawLine(
-		//		D2D1::Point2F(static_cast<FLOAT>(x), 0.0f),
-		//		D2D1::Point2F(static_cast<FLOAT>(x), rtSize.height),
-		//		m_lightSlateGrayBrush,
-		//		0.5f
-		//	);
-		//}
-		//
-		//for (int y = 0; y < height; y += 10)
-		//{
-		//	((ID2D1HwndRenderTarget*)Global::m_renderTarget.load())->DrawLine(
-		//		D2D1::Point2F(0.0f, static_cast<FLOAT>(y)),
-		//		D2D1::Point2F(rtSize.width, static_cast<FLOAT>(y)),
-		//		m_lightSlateGrayBrush,
-		//		0.5f
-		//	);
-		//}
-		
-		//D2D1_RECT_F rectangle1 = D2D1::RectF(
-		//	rtSize.width / 2 - 50.0f,
-		//	rtSize.height / 2 - 50.0f,
-		//	rtSize.width / 2 + 50.0f,
-		//	rtSize.height / 2 + 50.0f
-		//);
-		//
-		//D2D1_RECT_F rectangle2 = D2D1::RectF(
-		//	rtSize.width / 2 - 100.0f,
-		//	rtSize.height / 2 - 100.0f,
-		//	rtSize.width / 2 + 100.0f,
-		//	rtSize.height / 2 + 100.0f
-		//);
-		//
-		//((ID2D1HwndRenderTarget*)Global::m_renderTarget.load())->FillRectangle(&rectangle1, m_lightSlateGrayBrush);
-		//
-		//((ID2D1HwndRenderTarget*)Global::m_renderTarget.load())->DrawRectangle(&rectangle2, m_cornflowerBlueBrush);
 
 	
 }

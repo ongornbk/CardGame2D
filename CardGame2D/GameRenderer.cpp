@@ -26,12 +26,14 @@ void GameRenderer::Update()
 {
 }
 
+float mlt = 0.0f;
+float addd = 0.05f;
+
 void GameRenderer::Render()
 {
-	SetBrush(m_cornflowerBlueBrush);
-	for (int x = 0; x < m_renderTargetSize.x; x += 10)
-		DrawLine({ (float)x,m_renderTargetSize.y }, { (float)x,0 });
+	float stroke = 4.0f;
 	SetBrush(m_lightSlateGrayBrush);
-	for (int y = 0; y < m_renderTargetSize.y; y += 10)
-		DrawLine({0.0f,(float)y }, { m_renderTargetSize.x,(float)y });
+	SetStroke(stroke);
+	DrawRectangle({ m_renderTargetSize.x-10.0f,m_renderTargetSize.y-10.0f,10.0f,10.0f });
+	DrawWideText(L"Woll", { m_renderTargetSize.x, 100.0f,0.0f,10.0f });
 }
