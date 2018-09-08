@@ -143,20 +143,31 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Brushes.h" />
     <ClInclude Include="CardGame2D.h" />
+    <ClInclude Include="d2d1.h" />
     <ClInclude Include="Direct2D.h" />
     <ClInclude Include="Framework.h" />
-    <ClInclude Include="Global.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="GameRenderer.h" />
+    <ClInclude Include="Graphics.h" />
+    <ClInclude Include="RendererManager.h" />
+    <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Types.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Brushes.cpp" />
     <ClCompile Include="CardGame2D.cpp" />
     <ClCompile Include="Direct2D.cpp" />
     <ClCompile Include="Framework.cpp" />
-    <ClCompile Include="Global.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameRenderer.cpp" />
+    <ClCompile Include="Graphics.cpp" />
+    <ClCompile Include="RendererManager.cpp" />
+    <ClCompile Include="RenderTarget.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

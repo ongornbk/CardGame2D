@@ -1,12 +1,15 @@
 #include "stdafx.h"
 #include "Direct2D.h"
 #include <cstdlib>
-#include "Global.h"
+
+namespace
+{
+	RendererManager*       m_renderer;
+}
 
 Direct2D::Direct2D()
 {
 	m_hwnd = NULL;
-	Global::m_renderTarget = nullptr;
 	m_factory = nullptr;
 	m_lightSlateGrayBrush = nullptr;
 	m_cornflowerBlueBrush = nullptr;
@@ -15,10 +18,10 @@ Direct2D::Direct2D()
 
 Direct2D::~Direct2D()
 {
-	if (((ID2D1HwndRenderTarget*)Global::m_renderTarget.load()))
+	if (m_renderTarget.load())
 	{
-		((ID2D1HwndRenderTarget*)Global::m_renderTarget.load())->Release();
-		Global::m_renderTarget = nullptr;
+		m_renderTarget.load()->Release();
+		m_renderTarget = nullptr;
 	}
 	if (m_factory)
 	{
@@ -54,12 +57,12 @@ Boolean Direct2D::InitializeResources()
 
 	ID2D1HwndRenderTarget* temp;
 	result =  m_factory->CreateHwndRenderTarget(D2D1::RenderTargetProperties(),D2D1::HwndRenderTargetProperties(m_hwnd, size), &temp);
-	Global::m_renderTarget.store(temp, std::memory_order::memory_order_seq_cst);
+	m_renderTarget.store(temp, std::memory_order::memory_order_seq_cst);
 	CheckBoolean(result);
 
-	result = ((ID2D1HwndRenderTarget*)Global::m_renderTarget.load())->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::LightSlateGray), &m_lightSlateGrayBrush);
+	m_renderTarget.load()->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::LightSlateGray), &m_lightSlateGrayBrush);
 	CheckBoolean(result);
-	result = ((ID2D1HwndRenderTarget*)Global::m_renderTarget.load())->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::CornflowerBlue), &m_cornflowerBlueBrush);
+	m_renderTarget.load()->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::CornflowerBlue), &m_cornflowerBlueBrush);
 	CheckBoolean(result);
 	return result;
 }
@@ -69,10 +72,10 @@ Boolean Direct2D::InitializeResources()
 Boolean Direct2D::DiscardDeviceResources()
 {
 	Boolean result;
-	if (((ID2D1HwndRenderTarget*)Global::m_renderTarget.load()))
+	if ((m_renderTarget.load()))
 	{
-		result = ((ID2D1HwndRenderTarget*)Global::m_renderTarget.load())->Release();
-		Global::m_renderTarget = nullptr;
+		result = m_renderTarget.load()->Release();
+		m_renderTarget = nullptr;
 	}
 	CheckBoolean(result);
 	if (m_lightSlateGrayBrush)
@@ -93,72 +96,78 @@ Boolean Direct2D::DiscardDeviceResources()
 Boolean Direct2D::OnResize(uint32_t width, uint32_t height)
 {
 	Boolean result = -1;
-	if (((ID2D1HwndRenderTarget*)Global::m_renderTarget.load()))
-		result = ((ID2D1HwndRenderTarget*)Global::m_renderTarget.load())->Resize(D2D1::SizeU(width, height));
+	if (m_renderTarget.load())
+		result = m_renderTarget.load()->Resize(D2D1::SizeU(width, height));
 	CheckBoolean(result);
 	return result;
 }
 
+void Direct2D::SetRendererManager(RendererManager* renderer)
+{
+	m_renderer = renderer;
+	OutputDebugString(L"wewewewe");
+}
+
 void Direct2D::BeginDraw()
 {
-
+	m_renderer->Update();
 	InitializeResources();
-	((ID2D1HwndRenderTarget*)Global::m_renderTarget.load())->BeginDraw();
+	m_renderTarget.load()->BeginDraw();
 
-	((ID2D1HwndRenderTarget*)Global::m_renderTarget.load())->SetTransform(D2D1::Matrix3x2F::Identity());
+	m_renderTarget.load()->SetTransform(D2D1::Matrix3x2F::Identity());
 
-	((ID2D1HwndRenderTarget*)Global::m_renderTarget.load())->Clear(D2D1::ColorF(D2D1::ColorF::White));
+	m_renderTarget.load()->Clear(D2D1::ColorF(D2D1::ColorF::White));
 
+	m_renderTargetSize = { m_renderTarget.load()->GetSize().width,m_renderTarget.load()->GetSize().height };
 
-		D2D1_SIZE_F rtSize = ((ID2D1HwndRenderTarget*)Global::m_renderTarget.load())->GetSize();
+	m_renderer->Render();
+		
 
-		int width = (int)(rtSize.width);
-		int height = (int)(rtSize.height);
-
-		for (int x = 0; x < width; x += 10)
-		{
-			((ID2D1HwndRenderTarget*)Global::m_renderTarget.load())->DrawLine(
-				D2D1::Point2F(static_cast<FLOAT>(x), 0.0f),
-				D2D1::Point2F(static_cast<FLOAT>(x), rtSize.height),
-				m_lightSlateGrayBrush,
-				0.5f
-			);
-		}
-
-		for (int y = 0; y < height; y += 10)
-		{
-			((ID2D1HwndRenderTarget*)Global::m_renderTarget.load())->DrawLine(
-				D2D1::Point2F(0.0f, static_cast<FLOAT>(y)),
-				D2D1::Point2F(rtSize.width, static_cast<FLOAT>(y)),
-				m_lightSlateGrayBrush,
-				0.5f
-			);
-		}
-
-		D2D1_RECT_F rectangle1 = D2D1::RectF(
-			rtSize.width / 2 - 50.0f,
-			rtSize.height / 2 - 50.0f,
-			rtSize.width / 2 + 50.0f,
-			rtSize.height / 2 + 50.0f
-		);
-
-		D2D1_RECT_F rectangle2 = D2D1::RectF(
-			rtSize.width / 2 - 100.0f,
-			rtSize.height / 2 - 100.0f,
-			rtSize.width / 2 + 100.0f,
-			rtSize.height / 2 + 100.0f
-		);
-
-		((ID2D1HwndRenderTarget*)Global::m_renderTarget.load())->FillRectangle(&rectangle1, m_lightSlateGrayBrush);
-
-		((ID2D1HwndRenderTarget*)Global::m_renderTarget.load())->DrawRectangle(&rectangle2, m_cornflowerBlueBrush);
+		
+		//for (int x = 0; x < width; x += 10)
+		//{
+		//	((ID2D1HwndRenderTarget*)Global::m_renderTarget.load())->DrawLine(
+		//		D2D1::Point2F(static_cast<FLOAT>(x), 0.0f),
+		//		D2D1::Point2F(static_cast<FLOAT>(x), rtSize.height),
+		//		m_lightSlateGrayBrush,
+		//		0.5f
+		//	);
+		//}
+		//
+		//for (int y = 0; y < height; y += 10)
+		//{
+		//	((ID2D1HwndRenderTarget*)Global::m_renderTarget.load())->DrawLine(
+		//		D2D1::Point2F(0.0f, static_cast<FLOAT>(y)),
+		//		D2D1::Point2F(rtSize.width, static_cast<FLOAT>(y)),
+		//		m_lightSlateGrayBrush,
+		//		0.5f
+		//	);
+		//}
+		
+		//D2D1_RECT_F rectangle1 = D2D1::RectF(
+		//	rtSize.width / 2 - 50.0f,
+		//	rtSize.height / 2 - 50.0f,
+		//	rtSize.width / 2 + 50.0f,
+		//	rtSize.height / 2 + 50.0f
+		//);
+		//
+		//D2D1_RECT_F rectangle2 = D2D1::RectF(
+		//	rtSize.width / 2 - 100.0f,
+		//	rtSize.height / 2 - 100.0f,
+		//	rtSize.width / 2 + 100.0f,
+		//	rtSize.height / 2 + 100.0f
+		//);
+		//
+		//((ID2D1HwndRenderTarget*)Global::m_renderTarget.load())->FillRectangle(&rectangle1, m_lightSlateGrayBrush);
+		//
+		//((ID2D1HwndRenderTarget*)Global::m_renderTarget.load())->DrawRectangle(&rectangle2, m_cornflowerBlueBrush);
 
 	
 }
 
 void Direct2D::EndDraw()
 {
-	((ID2D1HwndRenderTarget*)Global::m_renderTarget.load())->EndDraw();
+	m_renderTarget.load()->EndDraw();
 		
 	DiscardDeviceResources();
 }
