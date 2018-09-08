@@ -8,7 +8,7 @@
 #include "Types.h"
 
 
-class Direct2D : Brushes,RenderTarget,RenderTargetSize,TextFormat
+class Direct2D : Brushes,RenderTarget,RenderTargetSize,TextFormat,TextSize
 {
 public:
 	Direct2D();
@@ -32,6 +32,7 @@ protected:
 	HWND m_hwnd;
 	ID2D1Factory*          m_factory;
 	IDWriteFactory*        m_writeFactory;
+	IWICImagingFactory*    m_imageFactory;
 
 };
 

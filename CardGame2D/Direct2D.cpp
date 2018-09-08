@@ -12,6 +12,7 @@ Direct2D::Direct2D()
 	m_hwnd = NULL;
 	m_factory = nullptr;
 	m_writeFactory = nullptr;
+	m_imageFactory = nullptr;
 	m_lightSlateGrayBrush = nullptr;
 	m_cornflowerBlueBrush = nullptr;
 }
@@ -34,6 +35,11 @@ Direct2D::~Direct2D()
 		m_writeFactory->Release();
 		m_writeFactory = nullptr;
 	}
+	if (m_imageFactory)
+	{
+		m_imageFactory->Release();
+		m_imageFactory = nullptr;
+	}
 	if (m_lightSlateGrayBrush)
 	{
 		m_lightSlateGrayBrush->Release();
@@ -52,6 +58,8 @@ Boolean Direct2D::CreateFactory()
 	result = D2D1CreateFactory(D2D1_FACTORY_TYPE_MULTI_THREADED, &m_factory);
 	CheckBoolean(result);
 	result = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED,__uuidof(m_writeFactory),reinterpret_cast<IUnknown **>(&m_writeFactory));
+	CheckBoolean(result);
+	result = CoCreateInstance(CLSID_WICImagingFactory, NULL, CLSCTX_INPROC_SERVER, IID_IWICImagingFactory, (LPVOID*)&m_imageFactory);
 	CheckBoolean(result);
 	return result;
 }
@@ -75,7 +83,7 @@ Boolean Direct2D::InitializeResources()
 	CheckBoolean(result);
 	result = m_renderTarget.load()->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::CornflowerBlue), &m_cornflowerBlueBrush);
 	CheckBoolean(result);
-	result = m_writeFactory->CreateTextFormat(L"Consolas",NULL,DWRITE_FONT_WEIGHT_NORMAL,DWRITE_FONT_STYLE_NORMAL,DWRITE_FONT_STRETCH_NORMAL,90,L"", &m_textFormat);
+	result = m_writeFactory->CreateTextFormat(L"Consolas",NULL,DWRITE_FONT_WEIGHT_NORMAL,DWRITE_FONT_STYLE_NORMAL,DWRITE_FONT_STRETCH_NORMAL,m_textSize,L"", &m_textFormat);
 	CheckBoolean(result);
 
 	result = m_textFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
@@ -107,6 +115,12 @@ Boolean Direct2D::DiscardDeviceResources()
 	{
 		result = m_cornflowerBlueBrush->Release();
 		m_cornflowerBlueBrush = nullptr;
+	}
+	CheckBoolean(result);
+	if (m_textFormat)
+	{
+		result = m_textFormat->Release();
+		m_textFormat = nullptr;
 	}
 	CheckBoolean(result);
 	return result;

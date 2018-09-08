@@ -25,9 +25,8 @@ GameRenderer::~GameRenderer()
 void GameRenderer::Update()
 {
 }
-
-float mlt = 0.0f;
-float addd = 0.05f;
+std::wstring w;
+float tt = 200.0f;
 
 void GameRenderer::Render()
 {
@@ -35,5 +34,8 @@ void GameRenderer::Render()
 	SetBrush(m_lightSlateGrayBrush);
 	SetStroke(stroke);
 	DrawRectangle({ m_renderTargetSize.x-10.0f,m_renderTargetSize.y-10.0f,10.0f,10.0f });
-	DrawWideText(L"Woll", { m_renderTargetSize.x, 100.0f,0.0f,10.0f });
+	w += L"#";
+	tt *= 0.999f;
+	SetTextSize(tt);
+	DrawWideText(w, { m_renderTargetSize.x, 100.0f,0.0f,10.0f });
 }

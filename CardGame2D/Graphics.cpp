@@ -50,6 +50,11 @@ void Graphics::SetStroke(float size)
 	m_stroke = size;
 }
 
+void Graphics::SetTextSize(float size)
+{
+	m_textSize = size;
+}
+
 ID2D1HwndRenderTarget * Graphics::__f000__()
 {
 	return m_renderTarget.load();

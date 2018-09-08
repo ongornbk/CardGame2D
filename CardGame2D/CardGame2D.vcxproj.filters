@@ -60,6 +60,12 @@
     <ClInclude Include="TextFormat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BitmapDecoder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TextSize.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -93,6 +99,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TextFormat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BitmapDecoder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TextSize.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
