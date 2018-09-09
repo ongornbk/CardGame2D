@@ -8,6 +8,6 @@ echo:
 set /p input="Commit Message : "
 echo %input% > version.ver
 git add *
-git commit -m "date /t %input%"
+git commit -m "%input%"
 git push
 pause
