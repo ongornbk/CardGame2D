@@ -4,11 +4,13 @@
 #include "Brushes.h"
 #include "RendererManager.h"
 #include "RenderTarget.h"
+#include "BitmapDecoder.h"
 #include "TextFormat.h"
+#include "ImageFactory.h"
 #include "Types.h"
 
 
-class Direct2D : Brushes,RenderTarget,RenderTargetSize,TextFormat,TextSize
+class Direct2D : Brushes,RenderTarget,RenderTargetSize,TextFormat,TextSize,ImageFactory,TextureManagerMap
 {
 public:
 	Direct2D();
@@ -32,7 +34,6 @@ protected:
 	HWND m_hwnd;
 	ID2D1Factory*          m_factory;
 	IDWriteFactory*        m_writeFactory;
-	IWICImagingFactory*    m_imageFactory;
 
 };
 

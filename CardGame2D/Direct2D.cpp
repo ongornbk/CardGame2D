@@ -50,6 +50,7 @@ Direct2D::~Direct2D()
 		m_cornflowerBlueBrush->Release();
 		m_cornflowerBlueBrush = nullptr;
 	}
+	ReleaseTextures();
 }
 
 Boolean Direct2D::CreateFactory()
@@ -59,8 +60,11 @@ Boolean Direct2D::CreateFactory()
 	CheckBoolean(result);
 	result = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED,__uuidof(m_writeFactory),reinterpret_cast<IUnknown **>(&m_writeFactory));
 	CheckBoolean(result);
-	result = CoCreateInstance(CLSID_WICImagingFactory, NULL, CLSCTX_INPROC_SERVER, IID_IWICImagingFactory, (LPVOID*)&m_imageFactory);
-	CheckBoolean(result);
+	//result = CoCreateInstance(CLSID_WICImagingFactory, NULL, CLSCTX_INPROC_SERVER, IID_IWICImagingFactory, (LPVOID*)&m_imageFactory);
+	//CheckBoolean(result);
+
+
+
 	return result;
 }
 
@@ -123,6 +127,7 @@ Boolean Direct2D::DiscardDeviceResources()
 		m_textFormat = nullptr;
 	}
 	CheckBoolean(result);
+	
 	return result;
 }
 

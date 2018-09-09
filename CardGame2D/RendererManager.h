@@ -10,7 +10,7 @@ public:
 	void Render();
 
 public:
-	RendererManager(void (*Render)(void));
+	RendererManager(void(*Update)(void),void (*Render)(void));
 	~RendererManager();
 protected:
 	float    m_deltaTime;

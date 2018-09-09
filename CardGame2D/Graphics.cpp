@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Graphics.h"
 #include "Direct2D.h"
+#include "Texture.h"
 
 #define gfx __f000__()->
 
@@ -43,6 +44,21 @@ void Graphics::DrawEllipse(DirectX::XMFLOAT4 ellipse)
 void Graphics::DrawWideText(std::wstring text, DirectX::XMFLOAT4 rect)
 {
 	gfx DrawTextW(text.c_str(), (uint32_t)text.size(), m_textFormat, { rect.x,rect.y,rect.z,rect.w }, m_activeBrush);
+}
+
+void Graphics::DrawImage(std::wstring texture, DirectX::XMFLOAT4 rect)
+{
+	Texture* tx = GetTexture(texture);
+	tx->Draw(rect);
+}
+
+void Graphics::LoadTexture(std::wstring name)
+{
+	Texture* texture = new Texture();
+	texture->CreateTextureFromFile(name);
+	if (texture)
+		PushTexture(name, texture);
+
 }
 
 void Graphics::SetStroke(float size)

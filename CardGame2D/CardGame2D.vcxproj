@@ -152,6 +152,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameRenderer.h" />
     <ClInclude Include="Graphics.h" />
+    <ClInclude Include="ImageFactory.h" />
     <ClInclude Include="RendererManager.h" />
     <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="Resource.h" />
@@ -159,6 +160,9 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TextFormat.h" />
     <ClInclude Include="TextSize.h" />
+    <ClInclude Include="Texture.h" />
+    <ClInclude Include="TextureManager.h" />
+    <ClInclude Include="TextureManagerMap.h" />
     <ClInclude Include="Types.h" />
   </ItemGroup>
   <ItemGroup>
@@ -170,6 +174,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameRenderer.cpp" />
     <ClCompile Include="Graphics.cpp" />
+    <ClCompile Include="ImageFactory.cpp" />
     <ClCompile Include="RendererManager.cpp" />
     <ClCompile Include="RenderTarget.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -180,6 +185,9 @@
     </ClCompile>
     <ClCompile Include="TextFormat.cpp" />
     <ClCompile Include="TextSize.cpp" />
+    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="TextureManager.cpp" />
+    <ClCompile Include="TextureManagerMap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="CardGame2D.rc" />
