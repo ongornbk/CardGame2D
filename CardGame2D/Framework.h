@@ -1,7 +1,9 @@
 #pragma once
 #include "Direct2D.h"
+#include "WindowHandle.h"
+#include "RenderTarget.h"
 
-class Framework
+class Framework : WindowHandle
 {
 public:
 	~Framework();
