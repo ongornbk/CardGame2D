@@ -1,6 +1,10 @@
 #include "stdafx.h"
 #include "GameRenderer.h"
 #include "Graphics.h"
+#include <sstream>
+#include <algorithm>
+#include <locale>
+#include <codecvt>
 
 namespace
 {
@@ -27,19 +31,54 @@ GameRenderer::~GameRenderer()
 {
 }
 
+uint16_t yt = 0u;
+
 void GameRenderer::Update()
 {
+	yt += 1u;
+	float offx = m_cameraPosition.x / 50.0f;
+	float offy = m_cameraPosition.y / 50.0f;
+	m_borders[0] = offx - (m_renderTargetSize.x / 50.0f);
+	m_borders[1] = offy - (m_renderTargetSize.y / 50.0f);
+	m_borders[2] = offx + (m_renderTargetSize.x / 50.0f);
+	m_borders[3] = offx + (m_renderTargetSize.y / 50.0f);
+	if (m_borders[0] < 0)m_borders[0] = 0;
+	if (m_borders[1] < 0)m_borders[1] = 0;
+	if (m_borders[2] >127)m_borders[2] = 127;
+	if (m_borders[3] < 19)m_borders[3] = 19;
+}
+
+std::wstring stringStream2wstring(std::stringstream& strs)
+{
+	std::string str = strs.str();
+	typedef std::codecvt_utf8<wchar_t> convert_type;
+	std::wstring_convert<convert_type, wchar_t> converter;
+	return converter.from_bytes(str);
 }
 
 void GameRenderer::Render()
 {
-	SetStroke(2.0f);
+	SetStroke(1.0f);
 	SetBrush(m_lightSlateGrayBrush);
-	FillRectangle({1.0f,1.0f,m_renderTargetSize.x-1.0f,m_renderTargetSize.y-1.0f});
-	SetBrush(m_cornflowerBlueBrush);
-	FillRectangle({ 10.0f,10.0f,m_renderTargetSize.x - 10.0f,m_renderTargetSize.y - 10.0f });
-	SetBrush(m_lightSlateGrayBrush);
-	DrawWideText(L"znanych jako wahaj¹ce siê, takich jak Pensylwania, Karolina Pó³nocna, Ohio, Wisconsin czy Floryda[260][261]. Zgodnie z ostatecznymi wynikami wyborów na Donalda Trumpa zag³osowa³o 62 979 879 osób (45,95%), co by³o drugim rezultatem w g³osowaniu bezpoœrednim. Pierwszy przypad³ kandydatce Partii Demokratycznej Hillary Clinton, która zdoby³a g³osy 65 845 063 osób (48,03%). Trump wygra³ jednak g³osowanie w Kolegium Elektorów, otrzymuj¹c 304 g³osy w stosunku do 227 g³osów Clinton[262]. By³ to pi¹ty w historii Stanów Zjednoczonych przypadek, w którym zwyciêzca wyborów przegrywa w g³osowaniu powszechnym, ale wygrywa w g³osowaniu elektorskim. Wczeœniej byli to John Quincy Adams (1824, przegrany – Andrew Jackson), Rutherford Hayes (1876, przegrany – Samuel J. Tilden), Benjamin Harrison (1888, przegrany – Grover Cleveland) i George W. Bush (2000, przegrany – Al Gore)[263][264].W wyborach, które odby³y siê 8 listopada 2016 Donald Trump zwyciê¿y³, uzyskuj¹c wiêcej ni¿ wymagana do zwyciêstwa wiêkszoœæ 270 g³osów elektorskich[259]. Wygran¹ w skali kraju zapewni³o Trumpowi niespodziewane zwyciêstwo w stanach znanych jako wahaj¹ce siê, takich jak Pensylwania, Karolina Pó³nocna, Ohio, Wisconsin czy Floryda[260][261]. Zgodnie z ostatecznymi wynikami wyborów na Donalda Trumpa zag³osowa³o 62 979 879 osób (45,95%), co by³o drugim rezultatem w g³osowaniu bezpoœrednim. Pierwszy przypad³ kandydatce Partii Demokratycznej Hillary Clinton, która zdoby³a g³osy 65 845 063 osób (48,03%). Trump wygra³ jednak g³osowanie w Kolegium Elektorów, otrzymuj¹c 304 g³osy w stosunku do 227 g³osów Clinton[262]. By³ to pi¹ty w historii Stanów Zjednoczonych przypadek, w którym zwyciêzca wyborów przegrywa w g³osowaniu powszechnym, ale wygrywa w g³osowaniu elektorskim. Wczeœniej byli to John Quincy Adams (1824, przegrany – Andrew Jackson), Rutherford Hayes (1876, przegrany – Samuel J. Tilden), Benjamin Harrison (1888, przegrany – Grover Cleveland) i George W. Bush (2000, przegrany – Al Gore)[263][264].W wyborach, które odby³y siê 8 listopada 2016 Donald Trump zwyciê¿y³, uzyskuj¹c wiêcej ni¿ wymagana do zwyciêstwa wiêkszoœæ 270 g³osów elektorskich[259]. Wygran¹ w skali kraju zapewni³o Trumpowi niespodziewane zwyciêstwo w stanach znanych jako wahaj¹ce siê, takich jak Pensylwania, Karolina Pó³nocna, Ohio, Wisconsin czy Floryda[260][261]. Zgodnie z ostatecznymi wynikami wyborów na Donalda Trumpa zag³osowa³o 62 979 879 osób (45,95%), co by³o drugim rezultatem w g³osowaniu bezpoœrednim. Pierwszy przypad³ kandydatce Partii Demokratycznej Hillary Clinton, która zdoby³a g³osy 65 845 063 osób (48,03%). Trump wygra³ jednak g³osowanie w Kolegium Elektorów, otrzymuj¹c 304 g³osy w stosunku do 227 g³osów Clinton[262]. By³ to pi¹ty w historii Stanów Zjednoczonych przypadek, w którym zwyciêzca wyborów przegrywa w g³osowaniu powszechnym, ale wygrywa w g³osowaniu elektorskim. Wczeœniej byli to John Quincy Adams (1824, przegrany – Andrew Jackson), Rutherford Hayes (1876, przegrany – Samuel J. Tilden), Benjamin Harrison (1888, przegrany – Grover Cleveland) i George W. Bush (2000, przegrany – Al Gore)[263][264].", { 1.0f,1.0f,m_renderTargetSize.x - 1.0f,m_renderTargetSize.y - 1.0f });
+	SetTextSize(50.0f);
 
+	float xs = m_xSize / -2.0f;
 
+	std::stringstream ss;
+	ss << L"0 : " << m_borders[0] << L"1 : " << m_borders[1] << L"2 : " << m_borders[2] << L"3 : " << m_borders[3];
+	std::wstring ws = stringStream2wstring(ss);
+	DrawWideText(ws, { 0,0,m_renderTargetSize.x,m_renderTargetSize.y });
+
+	//for (int32_t x = m_borders[0]; x < m_borders[2]; x++)
+	//{
+	//	for (int32_t y = m_borders[1]; y < m_borders[3]; y++)
+	//	{
+	//		if (m_gameMap[x][y])
+	//		{
+	//			SetStroke((x+y+yt)%50);
+	//			DirectX::XMFLOAT2 pt = m_gameMap[x][y]->position;
+	//			DrawRectangle({ 50.0f*(xs + x),50.0f*+y,50.0f*(xs+x+1),50.0f*(y+1) });
+	//		}
+	//	}
+	//}
 }

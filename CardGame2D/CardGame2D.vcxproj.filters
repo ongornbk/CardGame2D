@@ -1,147 +1,183 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Engine2D">
+      <UniqueIdentifier>{cfa4ea89-6d3f-4648-9fdd-d89634d0bf10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine2D\Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Engine2D\Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{0fcdf529-4052-4700-b6ae-9a5c8ded1288}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Components">
+      <UniqueIdentifier>{d2d80868-7900-43f6-b801-fda3c8b0a90b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Structures">
+      <UniqueIdentifier>{03faf498-f437-4cb8-9d4e-21cf9bf81789}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
+      <Filter>Engine2D\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
+      <Filter>Engine2D\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>Header Files</Filter>
+      <Filter>Engine2D\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CardGame2D.h">
-      <Filter>Header Files</Filter>
+      <Filter>Engine2D\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Direct2D.h">
-      <Filter>Header Files</Filter>
+      <Filter>Engine2D\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Types.h">
-      <Filter>Header Files</Filter>
+      <Filter>Engine2D\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Framework.h">
-      <Filter>Header Files</Filter>
+      <Filter>Engine2D\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Graphics.h">
-      <Filter>Header Files</Filter>
+      <Filter>Engine2D\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Brushes.h">
-      <Filter>Header Files</Filter>
+      <Filter>Engine2D\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="d2d1.h">
-      <Filter>Header Files</Filter>
+      <Filter>Engine2D\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RendererManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameRenderer.h">
-      <Filter>Header Files</Filter>
+      <Filter>Engine2D\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RenderTarget.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Game.h">
-      <Filter>Header Files</Filter>
+      <Filter>Engine2D\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TextFormat.h">
-      <Filter>Header Files</Filter>
+      <Filter>Engine2D\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BitmapDecoder.h">
-      <Filter>Header Files</Filter>
+      <Filter>Engine2D\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TextSize.h">
-      <Filter>Header Files</Filter>
+      <Filter>Engine2D\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TextureManager.h">
-      <Filter>Header Files</Filter>
+      <Filter>Engine2D\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">
-      <Filter>Header Files</Filter>
+      <Filter>Engine2D\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TextureManagerMap.h">
-      <Filter>Header Files</Filter>
+      <Filter>Engine2D\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ImageFactory.h">
-      <Filter>Header Files</Filter>
+      <Filter>Engine2D\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Input.h">
-      <Filter>Header Files</Filter>
+      <Filter>Engine2D\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WindowHandle.h">
-      <Filter>Header Files</Filter>
+      <Filter>Engine2D\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameRenderer.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="GameMap.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="GameMapComponent.h">
+      <Filter>Game\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.h">
+      <Filter>Game\Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraPositionComponent.h">
+      <Filter>Game\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CardGame2D.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Direct2D.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Engine2D\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Graphics.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Brushes.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Engine2D\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RendererManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GameRenderer.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Engine2D\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RenderTarget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Engine2D\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TextFormat.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BitmapDecoder.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Engine2D\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TextSize.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Engine2D\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TextureManager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Engine2D\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Engine2D\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TextureManagerMap.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Engine2D\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ImageFactory.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Engine2D\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Input.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Engine2D\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="WindowHandle.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Engine2D\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BitmapDecoder.cpp">
+      <Filter>Engine2D\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Brushes.cpp">
+      <Filter>Engine2D\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CardGame2D.cpp">
+      <Filter>Engine2D\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Direct2D.cpp">
+      <Filter>Engine2D\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework.cpp">
+      <Filter>Engine2D\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="GameRenderer.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="GameMap.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="GameMapComponent.cpp">
+      <Filter>Game\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>Game\Structures</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraPositionComponent.cpp">
+      <Filter>Game\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
