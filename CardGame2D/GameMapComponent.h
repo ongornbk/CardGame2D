@@ -4,7 +4,7 @@
 class GameMapComponent
 {
 protected:
-	static Tile* m_gameMap[128][20];
+	static Tile* m_gameMap[256][25];
 	static int32_t m_borders[4];
 };
 

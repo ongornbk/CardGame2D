@@ -157,6 +157,7 @@
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="ImageFactory.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="InputComponent.h" />
     <ClInclude Include="RendererManager.h" />
     <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="Resource.h" />
@@ -168,6 +169,7 @@
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="TextureManagerMap.h" />
     <ClInclude Include="Tile.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="Types.h" />
     <ClInclude Include="WindowHandle.h" />
   </ItemGroup>
@@ -177,6 +179,7 @@
     <ClCompile Include="CameraPositionComponent.cpp" />
     <ClCompile Include="CardGame2D.cpp" />
     <ClCompile Include="Direct2D.cpp" />
+    <ClCompile Include="InputComponent.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Framework.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -199,6 +202,7 @@
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="TextureManagerMap.cpp" />
+    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="WindowHandle.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "GameRenderer.h"
 #include "Graphics.h"
+#include "Timer.h"
 #include <sstream>
 #include <algorithm>
 #include <locale>
@@ -31,54 +32,101 @@ GameRenderer::~GameRenderer()
 {
 }
 
-uint16_t yt = 0u;
+namespace
+{
+	clock_t deltaTime = 0;
+	uint32_t frames = 0;
+	double  frameRate = 30;
+	double  averageFrameTimeMilliseconds = 33.333;
+	clock_t bf;
+	clock_t ef;
+	int __fps = 0;
+
+	extern "C"
+	{
+		double clockToMilliseconds(clock_t ticks) noexcept {
+			// units/(units/time) => time (seconds) * 1000 = milliseconds
+			return (ticks / (double)CLOCKS_PER_SEC)*1000.0;
+		}
+	}
+}
 
 void GameRenderer::Update()
 {
-	yt += 1u;
-	float offx = m_cameraPosition.x / 50.0f;
-	float offy = m_cameraPosition.y / 50.0f;
-	m_borders[0] = offx - (m_renderTargetSize.x / 50.0f);
-	m_borders[1] = offy - (m_renderTargetSize.y / 50.0f);
-	m_borders[2] = offx + (m_renderTargetSize.x / 50.0f);
-	m_borders[3] = offx + (m_renderTargetSize.y / 50.0f);
-	if (m_borders[0] < 0)m_borders[0] = 0;
-	if (m_borders[1] < 0)m_borders[1] = 0;
-	if (m_borders[2] >127)m_borders[2] = 127;
-	if (m_borders[3] < 19)m_borders[3] = 19;
+	bf = clock();
+	Timer::Update();
+	float dt = Timer::GetDeltaTime()*200.0f;
+	if (m_input->IsKeyDown(DIK_LEFT))
+	{
+		m_cameraPosition.x += dt;
+	}
+	if (m_input->IsKeyDown(DIK_RIGHT))
+	{
+		m_cameraPosition.x -= dt;
+	}
+	if (m_input->IsKeyDown(DIK_UP))
+	{
+		m_cameraPosition.y += dt;
+	}
+	if (m_input->IsKeyDown(DIK_DOWN))
+	{
+		m_cameraPosition.y -= dt;
+	}
+	float mapCentreX = m_xSize / 2.0f;
+	float mapCentreY = m_ySize / 2.0f;
+	int32_t xs = mapCentreX - (m_cameraPosition.x / 50.0f) - (m_renderTargetSize.x / 2.0f);
+	int32_t ys = mapCentreY - (m_cameraPosition.y / 50.0f) - (m_renderTargetSize.y / 2.0f);
+	int32_t xe = mapCentreX + (m_cameraPosition.x / 50.0f) + (m_renderTargetSize.x / 2.0f);
+	int32_t ye = mapCentreY + (m_cameraPosition.y / 50.0f) + (m_renderTargetSize.y / 2.0f);
+	if (xs < 0)xs = 0;
+	m_borders[0] = xs;
+	if (ys < 0)ys = 0;
+	m_borders[1] = ys;
+	if (xe >= m_xSize)xe = m_xSize - 1;
+	m_borders[2] = xe;
+	if (ye >= m_ySize)ye = m_ySize - 1;
+	m_borders[3] = ye;
+
+	
+	
 }
 
-std::wstring stringStream2wstring(std::stringstream& strs)
-{
-	std::string str = strs.str();
-	typedef std::codecvt_utf8<wchar_t> convert_type;
-	std::wstring_convert<convert_type, wchar_t> converter;
-	return converter.from_bytes(str);
-}
+
 
 void GameRenderer::Render()
 {
 	SetStroke(1.0f);
 	SetBrush(m_lightSlateGrayBrush);
-	SetTextSize(50.0f);
+	SetTextSize(30.0f);
 
-	float xs = m_xSize / -2.0f;
 
-	std::stringstream ss;
-	ss << L"0 : " << m_borders[0] << L"1 : " << m_borders[1] << L"2 : " << m_borders[2] << L"3 : " << m_borders[3];
-	std::wstring ws = stringStream2wstring(ss);
-	DrawWideText(ws, { 0,0,m_renderTargetSize.x,m_renderTargetSize.y });
 
-	//for (int32_t x = m_borders[0]; x < m_borders[2]; x++)
-	//{
-	//	for (int32_t y = m_borders[1]; y < m_borders[3]; y++)
-	//	{
-	//		if (m_gameMap[x][y])
-	//		{
-	//			SetStroke((x+y+yt)%50);
-	//			DirectX::XMFLOAT2 pt = m_gameMap[x][y]->position;
-	//			DrawRectangle({ 50.0f*(xs + x),50.0f*+y,50.0f*(xs+x+1),50.0f*(y+1) });
-	//		}
-	//	}
-	//}
+
+	for (int32_t x = m_borders[0]; x < m_borders[2]; x++)
+	{
+		for (int32_t y = m_borders[1]; y < m_borders[3]; y++)
+		{
+
+				DirectX::XMFLOAT2 pt = m_gameMap[x][y]->position;
+				DrawRectangle({ m_cameraPosition.x+(50.0f*x),m_cameraPosition.y+(50.0f*y),m_cameraPosition.x + 50.0f*(x+1),m_cameraPosition.y+(50.0f*(y+1))});
+		}
+	}
+
+	SetBrush(m_cornflowerBlueBrush);
+	ef = clock();
+
+	deltaTime += ef - bf;
+	frames++;
+
+	if (clockToMilliseconds(deltaTime) > 1000.0) {
+		frameRate = (double)frames*0.5 + frameRate * 0.5;
+		frames = 0;
+		deltaTime -= CLOCKS_PER_SEC;
+		averageFrameTimeMilliseconds = 1000.0 / (frameRate == 0 ? 0.001 : frameRate);
+
+		__fps = (int)(1000 / averageFrameTimeMilliseconds);
+
+
+	}
+	DrawWideText(std::to_wstring(__fps), {10.0f,10.0f,200.0f,50.0f});
 }

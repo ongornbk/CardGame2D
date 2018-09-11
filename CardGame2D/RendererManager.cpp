@@ -17,6 +17,7 @@ void RendererManager::Render()
 
 RendererManager::RendererManager(void(*Update)(void),void(*Render)(void))
 {
+
 	m_update = Update;
 	m_render = Render;
 }
