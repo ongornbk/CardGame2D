@@ -13,6 +13,7 @@ git push
 echo ################################# >> pushHistory.log
 echo DirectX11Engine >> pushHistory.log
 date /t >> pushHistory.log
+time /t >> pushHistory.log
 echo %input% >> pushHistory.log
 pause
 :exit
