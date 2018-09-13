@@ -108,6 +108,8 @@ void GameRenderer::Render()
 		{
 
 				DirectX::XMFLOAT2 pt = m_gameMap[x][y]->position;
+				if(m_gameMap[x][y]->m_brush)
+				SetBrush((ID2D1SolidColorBrush*)m_gameMap[x][y]->m_brush);
 				DrawRectangle({ m_cameraPosition.x+(50.0f*x),m_cameraPosition.y+(50.0f*y),m_cameraPosition.x + 50.0f*(x+1),m_cameraPosition.y+(50.0f*(y+1))});
 		}
 	}

@@ -7,4 +7,5 @@ struct Tile
 	~Tile() = default;
 
 	DirectX::XMFLOAT2 position;
+	void* m_brush;
 };

@@ -34,6 +34,7 @@ GameMap * GameMap::CreateGameMap()
 		{
 			m_gameMap[x][y] = new Tile();
 			m_gameMap[x][y]->position = {(float)(x)*10,(float)(y)*10};
+			m_gameMap[x][y]->m_brush = (void*)m_cornflowerBlueBrush;
 		}
 	}
 	return map;

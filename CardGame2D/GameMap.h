@@ -1,5 +1,6 @@
 #pragma once
 #include "GameMapComponent.h"
+#include "Brushes.h"
 #include <DirectXMath.h>
 
 
@@ -13,7 +14,7 @@ protected:
 	static uint16_t m_ySize;
 };
 
-class GameMap : GameMapSize,GameMapComponent
+class GameMap : GameMapSize,GameMapComponent,Brushes
 {
 public:
 	~GameMap();
