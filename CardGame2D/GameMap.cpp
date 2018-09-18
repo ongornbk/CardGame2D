@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "GameMap.h"
 
-uint16_t GameMapSize::m_xSize = 128u;
-uint16_t GameMapSize::m_ySize = 20u;
+uint16_t GameMapSize::m_xSize = GAMEMAP_SIZEX;
+uint16_t GameMapSize::m_ySize = GAMEMAP_SIZEY;
 
 GameMap::GameMap()
 {
