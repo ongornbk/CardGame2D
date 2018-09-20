@@ -151,8 +151,6 @@
     <ClInclude Include="Direct2D.h" />
     <ClInclude Include="Framework.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="GameMap.h" />
-    <ClInclude Include="GameMapComponent.h" />
     <ClInclude Include="GameRenderer.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="ImageFactory.h" />
@@ -168,7 +166,6 @@
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="TextureManagerMap.h" />
-    <ClInclude Include="Tile.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Types.h" />
     <ClInclude Include="WindowHandle.h" />
@@ -180,11 +177,8 @@
     <ClCompile Include="CardGame2D.cpp" />
     <ClCompile Include="Direct2D.cpp" />
     <ClCompile Include="InputComponent.cpp" />
-    <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Framework.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GameMap.cpp" />
-    <ClCompile Include="GameMapComponent.cpp" />
     <ClCompile Include="GameRenderer.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="ImageFactory.cpp" />

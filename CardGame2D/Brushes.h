@@ -6,4 +6,6 @@ class Brushes
 public:
 	static ID2D1SolidColorBrush*  m_lightSlateGrayBrush;
 	static ID2D1SolidColorBrush*  m_cornflowerBlueBrush;
+	static ID2D1SolidColorBrush*  m_redBrush;
+	static ID2D1SolidColorBrush*  m_orangeBrush;
 };

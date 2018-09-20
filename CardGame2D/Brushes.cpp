@@ -3,3 +3,6 @@
 
 ID2D1SolidColorBrush* Brushes::m_lightSlateGrayBrush = nullptr;
 ID2D1SolidColorBrush* Brushes::m_cornflowerBlueBrush = nullptr;
+ID2D1SolidColorBrush* Brushes::m_redBrush            = nullptr;
+ID2D1SolidColorBrush* Brushes::m_orangeBrush         = nullptr;
+

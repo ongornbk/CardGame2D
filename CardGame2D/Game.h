@@ -1,6 +1,5 @@
 #pragma once
 #include "GameRenderer.h"
-#include "GameMap.h"
 
 class Game
 {
@@ -12,6 +11,7 @@ public:
 
 private:
 	GameRenderer m_renderer;
-	GameMap*     m_gameMap;
+
+	
 };
 

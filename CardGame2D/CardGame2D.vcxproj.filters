@@ -78,15 +78,6 @@
     <ClInclude Include="Game.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="GameMap.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="GameMapComponent.h">
-      <Filter>Game\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile.h">
-      <Filter>Game\Structures</Filter>
-    </ClInclude>
     <ClInclude Include="CameraPositionComponent.h">
       <Filter>Game\Components</Filter>
     </ClInclude>
@@ -154,15 +145,6 @@
     </ClCompile>
     <ClCompile Include="GameRenderer.cpp">
       <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="GameMap.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="GameMapComponent.cpp">
-      <Filter>Game\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Tile.cpp">
-      <Filter>Game\Structures</Filter>
     </ClCompile>
     <ClCompile Include="CameraPositionComponent.cpp">
       <Filter>Game\Components</Filter>
