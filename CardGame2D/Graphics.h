@@ -31,5 +31,7 @@ private:
 
 	float m_stroke;
 
+
+
 };
 

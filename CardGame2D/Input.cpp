@@ -25,6 +25,7 @@ Input::Input(void)
 	m_keyboard = 0;
 	m_mouse = 0;
 	memset(m_keys, 0, sizeof(bool)*s_NumKeys);
+	OutputDebugStringW(L"DirectInput Contructed \n");
 }
 
 
@@ -37,6 +38,7 @@ Input::~Input(void)
 		(void)m_directInput->Release();
 		m_directInput = NULL;
 	}
+	OutputDebugStringW(L"DirectInput Destructed \n");
 }
 
 bool Input::Initialize(HINSTANCE hInstance, HWND hwnd, int screenWidth, int screenHeight)
@@ -49,59 +51,73 @@ bool Input::Initialize(HINSTANCE hInstance, HWND hwnd, int screenWidth, int scre
 	m_mouseX = 0;
 	m_mouseY = 0;
 
+	
+
 	result = DirectInput8Create(hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&m_directInput, NULL);
 	if (FAILED(result))
 	{
+		OutputDebugStringW(L"DirectInput DirectInput8Create FAILED \n");
 		return false;
 	}
 
 	result = m_directInput->CreateDevice(GUID_SysKeyboard, &m_keyboard, NULL);
 	if (FAILED(result))
 	{
+		OutputDebugStringW(L"DirectInput CreateDevice keyboard FAILED \n");
 		return false;
 	}
 
 	result = m_keyboard->SetDataFormat(&c_dfDIKeyboard);
 	if (FAILED(result))
 	{
+		OutputDebugStringW(L"DirectInput SetDataFormat keyboard FAILED \n");
 		return false;
 	}
 
 	result = m_keyboard->SetCooperativeLevel(hwnd, DISCL_FOREGROUND | DISCL_EXCLUSIVE);
 	if (FAILED(result))
 	{
+		OutputDebugStringW(L"DirectInput SetCooperativeLevel keyboard FAILED \n");
 		return false;
 	}
 
 	result = m_keyboard->Acquire();
 	if (FAILED(result))
 	{
+		OutputDebugStringW(L"DirectInput Acquire keyboard FAILED \n");
 		return false;
 	}
 
 	result = m_directInput->CreateDevice(GUID_SysMouse, &m_mouse, NULL);
 	if (FAILED(result))
 	{
+		OutputDebugStringW(L"DirectInput CreateDevice mouse FAILED \n");
 		return false;
 	}
 
 	result = m_mouse->SetDataFormat(&c_dfDIMouse);
 	if (FAILED(result))
 	{
+		OutputDebugStringW(L"DirectInput SetDataFormat mouse FAILED \n");
 		return false;
 	}
 
 	result = m_mouse->SetCooperativeLevel(hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
 	if (FAILED(result))
 	{
+		OutputDebugStringW(L"DirectInput SetCooperativeLevel mouse FAILED \n");
 		return false;
 	}
 
 	result = m_mouse->Acquire();
 	if (FAILED(result))
 	{
+		OutputDebugStringW(L"DirectInput Acquire mouse FAILED \n");
 		return false;
 	}
+
+	OutputDebugStringW(L"DirectInput Initialized \n");
+
 	return true;
 }
 

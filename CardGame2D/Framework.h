@@ -11,6 +11,7 @@ public:
 	void Render();
 	void Resize(uint32_t width, uint32_t height);
 	void SetWindow(HWND hwnd);
+	HWND GetWindow();
 
 	friend int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		_In_opt_ HINSTANCE hPrevInstance,

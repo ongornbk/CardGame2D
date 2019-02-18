@@ -26,3 +26,4 @@ RendererManager::RendererManager(void(*Update)(void),void(*Render)(void))
 RendererManager::~RendererManager()
 {
 }
+

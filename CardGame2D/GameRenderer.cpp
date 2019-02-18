@@ -8,8 +8,6 @@
 #include <codecvt>
 #include <random>
 
-#define TILE_SIZE 50.0f
-
 namespace
 {
 	GameRenderer* m_instance = nullptr;
@@ -23,6 +21,23 @@ namespace
 	{
 		m_instance->Update();
 	}
+
+	constexpr float MARGIN_LEFT = 50.f;
+	constexpr float MARGIN_RIGHT = 50.f;
+	constexpr float MARGIN_BOTTOM = 20.f;
+	constexpr float MARGIN_TOP = 100.f;
+
+	static float XSIZE;
+	static float YSIZE;
+
+	static float  margin_left;
+	static float  margin_right;
+	static float  margin_bottom;
+	static float  margin_top;
+
+	POINT mouseC;
+	POINT last;
+
 }
 
 
@@ -58,13 +73,16 @@ namespace
 
 GameRenderer::GameRenderer() : RendererManager(&updateFoo, &renderFoo)
 {
-	ZeroMemory(&matrix, sizeof(int8_t) * CELL_SIZE * CELL_SIZE);
+
+	srand(1234u);
+	ZeroMemory(&matrix, sizeof(CellS) * CELL_SIZE * CELL_SIZE);
 	for (int16_t x = 1; x < CELL_SIZE - 1; x++)
 	{
 		for (int16_t y = 1; y < CELL_SIZE - 1; y++)
 		{
-			int8_t r = Random8(0, 4);
-			if (!r) matrix[x][y] = 1;
+			if(!Random8(0,5))
+			matrix[x][y].stance = CellStance::MINE;
+			matrix[x][y].stance2 = CellStance2::NONE;
 		}
 	}
 	m_instance = this;
@@ -74,117 +92,109 @@ void GameRenderer::Update()
 {
 	bf = clock();
 	Timer::Update();
-	float dt = Timer::GetDeltaTime()*200.0f;
-	if (m_input->IsKeyDown(DIK_LEFT))
-	{
-		m_cameraPosition.x += dt;
-	}
-	if (m_input->IsKeyDown(DIK_RIGHT))
-	{
-		m_cameraPosition.x -= dt;
-	}
-	if (m_input->IsKeyDown(DIK_UP))
-	{
-		m_cameraPosition.y += dt;
-	}
-	if (m_input->IsKeyDown(DIK_DOWN))
-	{
-		m_cameraPosition.y -= dt;
-	}
 
-	
-	
+
+	GetCursorPos(&mouseC);
+	ScreenToClient(m_windowHandle, &mouseC);
+
+	matrix[last.x][last.y].hover = false;
+		
+		mouseC.x -= margin_left;
+		mouseC.x /= XSIZE;
+	if (mouseC.x >= CELL_SIZE)mouseC.x = CELL_SIZE - 1; else if (mouseC.x < 0) mouseC.x = 0;
+
+	mouseC.y -= margin_top;
+	mouseC.y /= YSIZE;
+	if (mouseC.y >= CELL_SIZE)mouseC.y = CELL_SIZE - 1; else if (mouseC.y < 0) mouseC.y = 0;
+	matrix[mouseC.x][mouseC.y].hover = true;
+
+	last = mouseC;
 }
-
 
 
 void GameRenderer::Render()
 {
 
-	bf = clock();
-
-	SetStroke(1.0f);
-	SetBrush(m_lightSlateGrayBrush);
+	
 	SetTextSize(30.0f);
 
+	margin_left  = MARGIN_LEFT;
+	margin_right  = MARGIN_RIGHT;
+	margin_bottom  = MARGIN_BOTTOM;
+	margin_top  = MARGIN_TOP;
 
-	int32_t summc = 0;
 
-	for (int16_t x = 1; x < CELL_SIZE-1; x++)
+	XSIZE = (m_renderTargetSize.x - margin_left - margin_right) / CELL_SIZE;
+	YSIZE = (m_renderTargetSize.y - margin_top - margin_bottom) / CELL_SIZE;
+
+	const float XSIZE_old = XSIZE;
+	const float YSIZE_old = YSIZE;
+
+	if (XSIZE > YSIZE)
 	{
-		for (int16_t y = 1; y < CELL_SIZE-1; y++)
-		{
-			if (matrix[x][y])
-			{
-				summc++;
-				int8_t sum = 0;
+		XSIZE = YSIZE;
+		margin_left += ((XSIZE_old - XSIZE) * (CELL_SIZE_FLOAT / 2.f));
+	}
+	else
+	{
+		YSIZE = XSIZE;
+		margin_top += ((YSIZE_old - YSIZE) * (CELL_SIZE_FLOAT / 2.f));
+	}
+		
 
-				if (matrix[x - 1][y])sum++;
-				if (matrix[x - 1][y - 1])sum++;
-				if (matrix[x - 1][y + 1])sum++;
-				if (matrix[x + 1][y + 1])sum++;
-				if (matrix[x + 1][y - 1])sum++;
-				if (matrix[x + 1][y])sum++;
-				if (matrix[x][y+1])sum++;
-				if (matrix[x][y-1])sum++;
-				if (sum > Random8(5,6)||sum < Random8(2,3))
+	
+	for (int x = 0; x < CELL_SIZE; x++)
+	{
+		for (int y = 0; y < CELL_SIZE; y++)
+		{
+			
+			const CellS cell = matrix[x][y];
+
+			switch (cell.stance2)
+			{
+			case CellStance2::NONE:
+			{
+				if (cell.hover)
 				{
-					matrix[x][y] = 0;
+					SetStroke(2.f);
+					SetBrush(m_orangeBrush);
 				}
 				else
 				{
-
-					if (sum < Random8(1,5)||matrix[x][y]<Random8(1,3))
-					{
-						int8_t r = Random8(0, 8);
-						switch (r)
-						{
-						case 0: matrix[x - 1][y] = sum;		  break;
-							case 1: matrix[x - 1][y - 1]= sum;	  break;
-							case 2: matrix[x - 1][y + 1]= sum;	  break;
-							case 3: matrix[x + 1][y + 1]= sum;	  break;
-							case 4: matrix[x + 1][y - 1]= sum;	  break;
-							case 5: matrix[x + 1][y]= sum;	  break;
-							case 6: matrix[x][y + 1]= sum;	  break;
-							case 7: matrix[x][y - 1]= sum;	  break;
-						}
-					}
-					matrix[x][y] = sum;
-					switch (sum)
-					{
-					case 2:
-						SetBrush(m_orangeBrush);
-						break;
-					case 3:
-						SetBrush(m_redBrush);
-						break;
-					
-					default:
-						SetBrush(m_lightSlateGrayBrush);
-					}
-					FillRectangle({ float(x - 1)*(m_renderTargetSize.x / CELL_SIZE_FLOAT),float(y - 1)*(m_renderTargetSize.y / CELL_SIZE_FLOAT),float(x)*(m_renderTargetSize.x / CELL_SIZE_FLOAT) ,float(y)*(m_renderTargetSize.y / CELL_SIZE_FLOAT) });
+					SetStroke(1.f);
+					SetBrush(m_lightSlateGrayBrush);
 				}
+				
+				DrawRectangle(DirectX::XMFLOAT4(margin_left + XSIZE * x, margin_top + YSIZE * y, margin_left + XSIZE * (x + 1), margin_top + YSIZE * (y + 1)));
+				break;
+			}
+
 			}
 		}
 	}
 
+	SetBrush(m_orangeBrush);
+	SetStroke(2.f);
+	DrawRectangle(DirectX::XMFLOAT4(margin_left -1.f, margin_top - 1.f, margin_left + XSIZE * (CELL_SIZE) + 1.f, margin_top + YSIZE * (CELL_SIZE) + 1.f));
+	
 	ef = clock();
-
+	
 	deltaTime += ef - bf;
 	frames++;
-
+	
 	if (clockToMilliseconds(deltaTime) > 1000.0) {
 		frameRate = (double)frames*0.5 + frameRate * 0.5;
 		frames = 0;
 		deltaTime -= CLOCKS_PER_SEC;
 		averageFrameTimeMilliseconds = 1000.0 / (frameRate == 0 ? 0.001 : frameRate);
-
+	
 		__fps = (int)(1000 / averageFrameTimeMilliseconds);
-
-
+	
+	
 	}
 	SetBrush(m_cornflowerBlueBrush);
 	DrawWideText(std::to_wstring(__fps), {10.0f,0.0f,200.0f,50.0f});
-	DrawWideText(std::to_wstring(summc), { 10.0f,80.0f,200.0f,50.0f });
+	DrawWideText(std::to_wstring(mouseC.x), { 10.0f,50.0f,200.0f,50.0f });
+	DrawWideText(std::to_wstring(mouseC.y), { 10.0f,100.0f,200.0f,50.0f });
 
 }

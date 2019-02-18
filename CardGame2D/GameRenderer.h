@@ -2,11 +2,36 @@
 #include "RendererManager.h"
 #include "CameraPositionComponent.h"
 #include "InputComponent.h"
+#include "WindowHandle.h"
 
-#define CELL_SIZE_FLOAT 128.0f
-#define CELL_SIZE       int(128)
+#define CELL_SIZE_FLOAT 16.f
+#define CELL_SIZE       int(16)
 
-class GameRenderer : RendererManager,RenderTargetSize,CameraPositionComponent,InputComponent
+
+
+enum CellStance
+{
+	EMPTY = 0,
+	MINE = 1
+};
+
+enum CellStance2
+{
+	NONE = 0,
+	FLAG = 1,
+	QUESTION_MARK = 2,
+	EXPLODE = 3
+};
+
+struct CellS
+{
+
+	bool        hover;
+	CellStance  stance;
+	CellStance2 stance2;
+};
+
+class GameRenderer : RendererManager,RenderTargetSize,InputComponent, WindowHandle
 {
 public:
 	GameRenderer();
@@ -16,6 +41,6 @@ public:
 	void Render();
 
 private:
-	int8_t matrix[CELL_SIZE][CELL_SIZE];
+	CellS matrix[CELL_SIZE][CELL_SIZE];
 };
 

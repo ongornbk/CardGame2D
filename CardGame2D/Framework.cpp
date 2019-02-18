@@ -38,4 +38,10 @@ void Framework::Resize(uint32_t width, uint32_t height)
 void Framework::SetWindow(HWND hwnd)
 {
 	m_graphics->m_hwnd = hwnd;
+	m_windowHandle = hwnd;
+}
+
+HWND Framework::GetWindow()
+{
+	return m_graphics->m_hwnd;
 }

@@ -91,6 +91,7 @@ Boolean Direct2D::InitializeResources()
 	ID2D1HwndRenderTarget* temp;
 	result =  m_factory->CreateHwndRenderTarget(D2D1::RenderTargetProperties(),D2D1::HwndRenderTargetProperties(m_hwnd, size), &temp);
 	m_renderTarget.store(temp, std::memory_order::memory_order_seq_cst);
+
 	CheckBoolean(result);
 
 	result = m_renderTarget.load()->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::LightSlateGray), &m_lightSlateGrayBrush);

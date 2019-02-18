@@ -11,5 +11,7 @@ public:
 public:
 	RendererManager(void(*Update)(void),void (*Render)(void));
 	~RendererManager();
+
+protected:
 };
 
