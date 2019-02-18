@@ -60,6 +60,11 @@ Direct2D::~Direct2D()
 		m_orangeBrush->Release();
 		m_orangeBrush = nullptr;
 	}
+	if (m_blackBrush)
+	{
+		m_blackBrush->Release();
+		m_blackBrush = nullptr;
+	}
 	ReleaseTextures();
 }
 
@@ -101,6 +106,8 @@ Boolean Direct2D::InitializeResources()
 	result = m_renderTarget.load()->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Red), &m_redBrush);
 	CheckBoolean(result);
 	result = m_renderTarget.load()->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Orange), &m_orangeBrush);
+	CheckBoolean(result);
+	result = m_renderTarget.load()->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Black), &m_blackBrush);
 	CheckBoolean(result);
 	result = m_writeFactory->CreateTextFormat(L"Consolas",NULL,DWRITE_FONT_WEIGHT_NORMAL,DWRITE_FONT_STYLE_NORMAL,DWRITE_FONT_STRETCH_NORMAL,m_textSize,L"", &m_textFormat);
 	CheckBoolean(result);
@@ -146,6 +153,12 @@ Boolean Direct2D::DiscardDeviceResources()
 	{
 		result = m_orangeBrush->Release();
 		m_orangeBrush = nullptr;
+	}
+	CheckBoolean(result);
+	if (m_blackBrush)
+	{
+		result = m_blackBrush->Release();
+		m_blackBrush = nullptr;
 	}
 	CheckBoolean(result);
 	if (m_textFormat)

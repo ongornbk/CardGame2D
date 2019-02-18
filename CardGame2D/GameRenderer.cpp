@@ -76,15 +76,74 @@ GameRenderer::GameRenderer() : RendererManager(&updateFoo, &renderFoo)
 
 	srand(1234u);
 	ZeroMemory(&matrix, sizeof(CellS) * CELL_SIZE * CELL_SIZE);
-	for (int16_t x = 1; x < CELL_SIZE - 1; x++)
+	for (int16_t x = 0; x < CELL_SIZE - 1; x++)
 	{
-		for (int16_t y = 1; y < CELL_SIZE - 1; y++)
+		for (int16_t y = 0; y < CELL_SIZE - 1; y++)
 		{
-			if(!Random8(0,5))
-			matrix[x][y].stance = CellStance::MINE;
+			if (Random8(0, 100)<20)
+			{
+				matrix[x][y].stance = CellStance::MINE;
+				matrix[x][y].stance2 = CellStance2::NONE;
+
+				if (x > 0)
+				{
+					if (y > 0)
+					{
+						matrix[x - 1][y - 1].mines++;
+						matrix[x][y - 1].mines++;
+						matrix[x - 1][y].mines++;
+						if (y < (CELL_SIZE - 1))
+						{
+							matrix[x - 1][y + 1].mines++;
+							matrix[x][y + 1].mines++;
+						}
+						if (x < (CELL_SIZE - 1))
+						{
+							matrix[x + 1][y - 1].mines++;
+							matrix[x + 1][y].mines++;
+							if (y < (CELL_SIZE - 1))
+							matrix[x + 1][y + 1].mines++;
+						}
+
+					}
+					else
+					{
+						matrix[x - 1][y].mines++;
+						matrix[x - 1][y+1].mines++;
+						matrix[x][y + 1].mines++;
+						if (x < (CELL_SIZE - 1))
+						{
+							matrix[x + 1][y + 1].mines++;
+							matrix[x + 1][y].mines++;
+						}
+					}
+				}
+				else
+				{
+					if (y > 0)
+					{
+						matrix[x][y - 1].mines++;
+						matrix[x + 1][y - 1].mines++;
+						matrix[x + 1][y].mines++;
+						if (y < (CELL_SIZE - 1))
+						{
+							matrix[x +1][y + 1].mines++;
+							matrix[x][y + 1].mines++;
+						}
+					}
+					else
+					{
+						matrix[x][y + 1].mines++;
+						matrix[x + 1][y +1].mines++;
+						matrix[x + 1][y].mines++;
+					}
+				}
+
+			}
 			matrix[x][y].stance2 = CellStance2::NONE;
 		}
 	}
+
 	m_instance = this;
 }
 
@@ -105,10 +164,41 @@ void GameRenderer::Update()
 
 	mouseC.y -= margin_top;
 	mouseC.y /= YSIZE;
+
+	
+
 	if (mouseC.y >= CELL_SIZE)mouseC.y = CELL_SIZE - 1; else if (mouseC.y < 0) mouseC.y = 0;
-	matrix[mouseC.x][mouseC.y].hover = true;
+
+	CellS &cell = matrix[mouseC.x][mouseC.y];
+	cell.hover = true;
 
 	last = mouseC;
+
+	//
+
+	const bool lclick = m_input->GetMousePressed(0);
+	const bool rclick = m_input->GetMousePressed(1);
+
+	if (lclick)
+	{
+		
+
+		int x = mouseC.x;
+		int y = mouseC.y;
+
+		cell.reveal(matrix, x, y);
+
+		
+	}
+	else
+	{
+		if (rclick)
+		{
+			cell.flag();
+		}
+	}
+
+
 }
 
 
@@ -148,7 +238,9 @@ void GameRenderer::Render()
 		for (int y = 0; y < CELL_SIZE; y++)
 		{
 			
-			const CellS cell = matrix[x][y];
+			const CellS& cell = matrix[x][y];
+
+			const DirectX::XMFLOAT4 pos = DirectX::XMFLOAT4(margin_left + XSIZE * x, margin_top + YSIZE * y, margin_left + XSIZE * (x + 1), margin_top + YSIZE * (y + 1));
 
 			switch (cell.stance2)
 			{
@@ -158,14 +250,37 @@ void GameRenderer::Render()
 				{
 					SetStroke(2.f);
 					SetBrush(m_orangeBrush);
+					DrawRectangle(pos);
 				}
 				else
 				{
-					SetStroke(1.f);
-					SetBrush(m_lightSlateGrayBrush);
+							SetStroke(1.f);
+							SetBrush(m_lightSlateGrayBrush);
+							DrawRectangle(pos);
 				}
+
 				
-				DrawRectangle(DirectX::XMFLOAT4(margin_left + XSIZE * x, margin_top + YSIZE * y, margin_left + XSIZE * (x + 1), margin_top + YSIZE * (y + 1)));
+				
+				break;
+			}
+			case CellStance2::EXPLODE:
+			{
+				SetBrush(m_redBrush);
+				FillRectangle(pos);
+				break;
+			}
+			case CellStance2::REVEALED:
+			{
+				SetBrush(m_cornflowerBlueBrush);
+				FillRectangle(pos);
+				SetBrush(m_blackBrush);
+				DrawWideText(std::to_wstring(cell.mines), pos);
+				break;
+			}
+			case CellStance2::FLAG:
+			{
+				SetBrush(m_orangeBrush);
+				FillRectangle(pos);
 				break;
 			}
 
@@ -193,7 +308,7 @@ void GameRenderer::Render()
 	
 	}
 	SetBrush(m_cornflowerBlueBrush);
-	DrawWideText(std::to_wstring(__fps), {10.0f,0.0f,200.0f,50.0f});
+	DrawWideText(std::to_wstring(__fps) + L" FPS", {10.0f,0.0f,200.0f,50.0f});
 	DrawWideText(std::to_wstring(mouseC.x), { 10.0f,50.0f,200.0f,50.0f });
 	DrawWideText(std::to_wstring(mouseC.y), { 10.0f,100.0f,200.0f,50.0f });
 

@@ -8,4 +8,5 @@ public:
 	static ID2D1SolidColorBrush*  m_cornflowerBlueBrush;
 	static ID2D1SolidColorBrush*  m_redBrush;
 	static ID2D1SolidColorBrush*  m_orangeBrush;
+	static ID2D1SolidColorBrush*  m_blackBrush;
 };
