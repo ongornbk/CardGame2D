@@ -4,8 +4,8 @@
 #include "InputComponent.h"
 #include "WindowHandle.h"
 
-#define CELL_SIZE_FLOAT 18.f
-#define CELL_SIZE       int(18)
+#define CELL_SIZE_FLOAT 16.f
+#define CELL_SIZE       int(16)
 
 
 

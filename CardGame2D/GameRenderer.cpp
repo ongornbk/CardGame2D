@@ -12,11 +12,13 @@ namespace
 {
 	GameRenderer* m_instance = nullptr;
 
+	_Use_decl_annotations_
 	static void _stdcall renderFoo() noexcept
 	{
 		m_instance->Render();
 	}
 
+	_Use_decl_annotations_
 	static void _stdcall updateFoo() noexcept
 	{
 		m_instance->Update();
@@ -50,12 +52,12 @@ GameRenderer::~GameRenderer()
 namespace
 {
 	clock_t deltaTime = 0;
-	uint32_t frames = 0;
+	uint64_t frames = 0;
 	double  frameRate = 30;
 	double  averageFrameTimeMilliseconds = 33.333;
 	clock_t bf;
 	clock_t ef;
-	int __fps = 0;
+	uint64_t __fps = 0;
 
 	extern "C"
 	{
@@ -76,6 +78,8 @@ GameRenderer::GameRenderer() : RendererManager(&updateFoo, &renderFoo)
 
 	srand(1234u);
 	ZeroMemory(&matrix, sizeof(CellS) * CELL_SIZE * CELL_SIZE);
+
+#pragma omp parallel for schedule(dynamic)
 	for (int16_t x = 0; x < CELL_SIZE - 1; x++)
 	{
 		for (int16_t y = 0; y < CELL_SIZE - 1; y++)
@@ -212,7 +216,6 @@ void GameRenderer::Render()
 	margin_right  = MARGIN_RIGHT;
 	margin_bottom  = MARGIN_BOTTOM;
 	margin_top  = MARGIN_TOP;
-
 
 	XSIZE = (m_renderTargetSize.x - margin_left - margin_right) / CELL_SIZE;
 	YSIZE = (m_renderTargetSize.y - margin_top - margin_bottom) / CELL_SIZE;
